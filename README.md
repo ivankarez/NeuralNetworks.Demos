@@ -1,2 +1,2 @@
 # NeuralNetworks.Demos
-Some demo apps for my Neural Networks repository
+Some demo apps for my Neural Networks repository. Currently in progress...
