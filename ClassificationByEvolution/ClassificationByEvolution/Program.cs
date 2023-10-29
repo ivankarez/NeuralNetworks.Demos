@@ -35,7 +35,8 @@ namespace ClassificationByEvolution
                 var testInputs = ReadImageGrayscale(testImage);
                 var testOutputs = best.NeuralNetwork.Feedforward(testInputs);
                 var decision = testOutputs[0] > testOutputs[1] ? "A" : "B";
-                Console.WriteLine($"\t{Path.GetFileName(testImage)}: {decision}");
+                var confidence = Math.Abs(testOutputs[0] - testOutputs[1]);
+                Console.WriteLine($"\t{Path.GetFileName(testImage)}: {decision} ({confidence*100:f2}% confidence)");
             }
         }
 
