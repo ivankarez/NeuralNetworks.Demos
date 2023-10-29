@@ -4,8 +4,8 @@ This C# console application is a demo project that utilizes neuroevolution to te
 
 ### Dataset
 This demo uses a dummy dataset of 8 128*128 black-white image of a 'A' and 'B' characters. After 500 generations it uses the best network of the latest generation to classify the images in the `Training Data/Test` folder.
-![Training Data Set](http://url/to/img.png)
-![Testing Data Set](http://url/to/img.png)
+![Training Data Set](https://raw.githubusercontent.com/ivankarez/NeuralNetworks.Demos/main/Images/Training%20Data%20Set.png)
+![Testing Data Set](https://raw.githubusercontent.com/ivankarez/NeuralNetworks.Demos/main/Images/Testing%20Data%20Set.png)
 
 ### Example Output
 ```csharp
