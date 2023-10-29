@@ -1,4 +1,6 @@
 # NeuralNetworks.Demos
+A repository to store demo projects for my [Neural Networks](https://github.com/ivankarez/NeuralNetworks) C# library.
+
 ## Classification By Evolution
 This C# console application is a demo project that utilizes neuroevolution to teach networks to distinguish between characters 'A' and 'B'. The code evolves a population of neural network individuals over multiple generations to minimize classification errors for these characters.
 
