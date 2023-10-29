@@ -32,7 +32,7 @@ namespace ClassificationByEvolution
             Console.WriteLine("Test file results:");
             foreach (var testImage in Directory.GetFiles(Path.Join("Training Data", "Test")))
             {
-                var testInputs = ReadImageGrayscale(testImage);
+                var testInputs = ImageTools.ReadImageGrayscale(testImage);
                 var testOutputs = best.NeuralNetwork.Feedforward(testInputs);
                 var decision = testOutputs[0] > testOutputs[1] ? "A" : "B";
                 var confidence = Math.Abs(testOutputs[0] - testOutputs[1]);
@@ -45,31 +45,13 @@ namespace ClassificationByEvolution
             var samples = new List<TrainingSample>();
             foreach (var file in Directory.GetFiles(Path.Join("Training Data", "A")))
             {
-                samples.Add(new TrainingSample(ReadImageGrayscale(file), new[] { 1f, 0f }));
+                samples.Add(new TrainingSample(ImageTools.ReadImageGrayscale(file), new[] { 1f, 0f }));
             }
             foreach (var file in Directory.GetFiles(Path.Join("Training Data", "B")))
             {
-                samples.Add(new TrainingSample(ReadImageGrayscale(file), new[] { 0f, 1f }));
+                samples.Add(new TrainingSample(ImageTools.ReadImageGrayscale(file), new[] { 0f, 1f }));
             }
             return samples;
-        }
-
-        static float[] ReadImageGrayscale(string path)
-        {
-            using (var image = Image.Load<Rgba32>(path))
-            {
-                var pixels = new float[image.Width * image.Height];
-                for (int y = 0; y < image.Height; y++)
-                {
-                    for (int x = 0; x < image.Width; x++)
-                    {
-                        Rgba32 pixel = image[x, y];
-                        pixels[y * image.Width + x] = (pixel.R + pixel.G + pixel.B) / (3f * 255f);
-                    }
-                }
-
-                return pixels;
-            }
         }
 
         static List<Individual> CreateFirstGeneration()
@@ -122,37 +104,16 @@ namespace ClassificationByEvolution
             {
                 var parent1 = nextGeneration[Random.Next(SURVIVOR_COUNT)];
                 var parent2 = nextGeneration[Random.Next(SURVIVOR_COUNT)];
-                var childDna = Crossover(parent1.NeuralNetwork.GetParametersFlat(),
-                    parent2.NeuralNetwork.GetParametersFlat());
-                Mutate(childDna);
+                var childDna = DnaTools.Crossover(parent1.NeuralNetwork.GetParametersFlat(),
+                    parent2.NeuralNetwork.GetParametersFlat(),
+                    Random);
+                DnaTools.Mutate(childDna, Random, MUTATION_RATE, MUTATION_AMOUNT);
                 var childNetworkModel = CreateNetworkModel();
                 childNetworkModel.SetParametersFlat(childDna);
                 nextGeneration.Add(new Individual(childNetworkModel));
             }
 
             return nextGeneration;
-        }
-
-        static float[] Crossover(float[] dna1, float[] dna2)
-        {
-            var newDna = new float[dna1.Length];
-            for (int i = 0; i < dna1.Length; i++)
-            {
-                newDna[i] = Random.NextDouble() < 0.5 ? dna1[i] : dna2[i];
-            }
-
-            return newDna;
-        }
-
-        static void Mutate(float[] dna)
-        {
-            for (int i = 0; i < dna.Length; i++)
-            {
-                if ( Random.NextDouble() < MUTATION_RATE )
-                {
-                    dna[i] += (float)Random.NextDouble() * MUTATION_AMOUNT - (MUTATION_AMOUNT / 2f);
-                }
-            }
         }
     }
 }
