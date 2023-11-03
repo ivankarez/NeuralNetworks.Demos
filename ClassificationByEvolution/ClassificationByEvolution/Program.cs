@@ -67,9 +67,9 @@ namespace ClassificationByEvolution
 
         static LayeredNetworkModel CreateNetworkModel()
         {
-            return NN.Models.Layered(125 * 125,
-                NN.Layers.Conv2D((125, 125), (5, 5)),
-                NN.Layers.Pooling2D((121, 121), (10, 10), (10, 10)),
+            return NN.Models.Layered(NN.Size.Of(125, 125),
+                NN.Layers.Conv2D((5, 5)),
+                NN.Layers.Pooling2D((10, 10), (10, 10)),
                 NN.Layers.Dense(10),
                 NN.Layers.Dense(5),
                 NN.Layers.Dense(2));
